@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block navbar %}
+
+{% include 'components/navbar.html' %}
+
+{% endblock navbar %}
+
+{% block content %}
+
+{% include "components/messages.html" %}
+
+
+<div class="container">
+    <h1>Products in  {{ category.name }}</h1>
+
+    <a href="{% url 'products:create_product' %}"><button class="create">Create Product</button></a>
+
+    {% if products.exists %}
+        <div class="grid">
+            {% for product in products %}
+            <div class="card">
+            <h2>
+                <a href="{% url 'products:detail_product' product.id %}">{{ product.name }}</a>
+            </h2>
+            <p><strong>Total:</strong> {{ product.total_display|intcomma }}</p>
+                <a href="{% url 'products:update_product' product.id %}"><button class="update">update</button></a>
+                <a href="{% url 'products:delete_product' product.id %}"><button class="delete">delete</button></a>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You have not created products in this category</p>
+        <img src="{% static 'patito.gif' %}" alt="">
+    {% endif %}
+</div>
+
+{% endblock content %}
